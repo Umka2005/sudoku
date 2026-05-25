@@ -1,15 +1,6 @@
 import { motion } from 'motion/react';
 import { X, Globe, Moon, Sun, Check } from 'lucide-react';
-import { Language, Theme } from '../types';
 import { translations } from '../translations';
-
-interface SettingsScreenProps {
-  language: Language;
-  setLanguage: (lang: Language) => void;
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-  onClose: () => void;
-}
 
 export default function SettingsScreen({
   language,
@@ -17,10 +8,10 @@ export default function SettingsScreen({
   theme,
   setTheme,
   onClose
-}: SettingsScreenProps) {
+}) {
   const t = translations[language];
 
-  const languagesList: { code: Language; label: string; desc: string }[] = [
+  const languagesList = [
     { code: 'en', label: 'English', desc: 'English' },
     { code: 'ru', label: 'Русский', desc: 'Russian' },
     { code: 'uz', label: "O'zbekcha", desc: 'Uzbek' }
@@ -51,7 +42,7 @@ export default function SettingsScreen({
           id="btn-settings-close"
           className={`p-2 rounded-full border transition-colors ${
             theme === 'dark' 
-              ? 'bg-white/5 border-white/10 hover:bg-white/10 text-slate-350' 
+              ? 'bg-white/5 border-white/10 hover:bg-white/10 text-slate-300' 
               : 'bg-slate-100/60 border-slate-200 hover:bg-slate-200 text-slate-600'
           }`}
           aria-label="Close Settings"
@@ -82,7 +73,7 @@ export default function SettingsScreen({
                         : 'border-blue-600 bg-blue-600/10 text-blue-800 font-semibold shadow-[0_0_15px_rgba(37,99,235,0.15)]'
                       : theme === 'dark'
                       ? 'border-white/5 bg-white/5 hover:bg-white/10 text-slate-300'
-                      : 'border-slate-200/50 bg-slate-50/50 hover:bg-slate-100/50 text-slate-755'
+                      : 'border-slate-200/50 bg-slate-50/50 hover:bg-slate-100/50 text-slate-700'
                   }`}
                 >
                   <div>
@@ -128,7 +119,7 @@ export default function SettingsScreen({
               id="btn-theme-dark"
               className={`flex flex-col items-center justify-center p-4 rounded-xl border gap-2 transition-all duration-200 ${
                 theme === 'dark'
-                  ? 'border-sky-500 bg-sky-500/25 text-sky-350 font-semibold shadow-[0_0_12px_rgba(56,189,248,0.25)]'
+                  ? 'border-sky-500 bg-sky-500/25 text-sky-300 font-semibold shadow-[0_0_12px_rgba(56,189,248,0.25)]'
                   : 'border-slate-200/50 bg-slate-50/50 text-slate-400 hover:bg-slate-100/50'
               }`}
             >

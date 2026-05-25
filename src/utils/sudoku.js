@@ -1,13 +1,9 @@
-import { Difficulty, SudokuGrid, SudokuCell } from '../types';
-
-type Board = number[][];
-
-function getEmptyBoard(): Board {
+function getEmptyBoard() {
   return Array(9).fill(null).map(() => Array(9).fill(0));
 }
 
 // Checks if placing num at board[row][col] is valid according to Sudoku rules
-function isValid(board: Board, row: number, col: number, num: number): boolean {
+function isValid(board, row, col, num) {
   for (let x = 0; x < 9; x++) {
     if (board[row][x] === num) return false;
     if (board[x][col] === num) return false;
@@ -20,7 +16,7 @@ function isValid(board: Board, row: number, col: number, num: number): boolean {
 }
 
 // Backtracking solver
-function solve(board: Board): boolean {
+function solve(board) {
   for (let r = 0; r < 9; r++) {
     for (let c = 0; c < 9; c++) {
       if (board[r][c] === 0) {
@@ -41,7 +37,7 @@ function solve(board: Board): boolean {
 }
 
 // Generates a puzzle based on Difficulty
-export function generatePuzzle(difficulty: Difficulty): { grid: SudokuGrid; solution: Board } {
+export function generatePuzzle(difficulty) {
   const solved = getEmptyBoard();
   solve(solved);
 
@@ -60,9 +56,9 @@ export function generatePuzzle(difficulty: Difficulty): { grid: SudokuGrid; solu
   }
 
   // Create starting full grid
-  const grid: SudokuGrid = [];
+  const grid = [];
   for (let r = 0; r < 9; r++) {
-    const rowCells: SudokuCell[] = [];
+    const rowCells = [];
     for (let c = 0; c < 9; c++) {
       rowCells.push({
         row: r,
@@ -97,17 +93,17 @@ export function generatePuzzle(difficulty: Difficulty): { grid: SudokuGrid; solu
 }
 
 // Checks if current entered cells violate physical board constraints (duplicate in row/col/box)
-export function getDuplicateConflicts(grid: SudokuGrid): boolean[][] {
+export function getDuplicateConflicts(grid) {
   const conflicts = Array(9).fill(null).map(() => Array(9).fill(false));
 
   // Check rows
   for (let r = 0; r < 9; r++) {
-    const seen = new Map<number, number[]>(); // val -> lists of columns
+    const seen = new Map(); // val -> lists of columns
     for (let c = 0; c < 9; c++) {
       const val = grid[r][c].value;
       if (val !== 0) {
         if (!seen.has(val)) seen.set(val, []);
-        seen.get(val)!.push(c);
+        seen.get(val).push(c);
       }
     }
     for (const cols of seen.values()) {
@@ -121,12 +117,12 @@ export function getDuplicateConflicts(grid: SudokuGrid): boolean[][] {
 
   // Check columns
   for (let c = 0; c < 9; c++) {
-    const seen = new Map<number, number[]>(); // val -> list of rows
+    const seen = new Map(); // val -> list of rows
     for (let r = 0; r < 9; r++) {
       const val = grid[r][c].value;
       if (val !== 0) {
         if (!seen.has(val)) seen.set(val, []);
-        seen.get(val)!.push(r);
+        seen.get(val).push(r);
       }
     }
     for (const rows of seen.values()) {
@@ -142,14 +138,14 @@ export function getDuplicateConflicts(grid: SudokuGrid): boolean[][] {
   for (let box = 0; box < 9; box++) {
     const startRow = 3 * Math.floor(box / 3);
     const startCol = 3 * (box % 3);
-    const seen = new Map<number, {r: number, c: number}[]>();
+    const seen = new Map();
     for (let i = 0; i < 9; i++) {
       const r = startRow + Math.floor(i / 3);
       const c = startCol + (i % 3);
       const val = grid[r][c].value;
       if (val !== 0) {
         if (!seen.has(val)) seen.set(val, []);
-        seen.get(val)!.push({r, c});
+        seen.get(val).push({r, c});
       }
     }
     for (const items of seen.values()) {
@@ -165,7 +161,7 @@ export function getDuplicateConflicts(grid: SudokuGrid): boolean[][] {
 }
 
 // Checks if the grid matches the unique solution perfectly and is complete
-export function checkGridCompleted(grid: SudokuGrid): boolean {
+export function checkGridCompleted(grid) {
   for (let r = 0; r < 9; r++) {
     for (let c = 0; c < 9; c++) {
       if (grid[r][c].value === 0 || grid[r][c].value !== grid[r][c].solvedValue) {

@@ -1,18 +1,6 @@
 import { motion } from 'motion/react';
-import { Trophy, Home, RotateCcw, Award } from 'lucide-react';
-import { Difficulty, Theme, Language } from '../types';
+import { Trophy, Home, Award } from 'lucide-react';
 import { translations } from '../translations';
-
-interface CompletionModalProps {
-  timeSpent: number;
-  difficulty: Difficulty;
-  bestTime: number | null;
-  isNewRecord: boolean;
-  onNewGame: () => void;
-  onMainMenu: () => void;
-  theme: Theme;
-  language: Language;
-}
 
 export default function CompletionModal({
   timeSpent,
@@ -23,17 +11,17 @@ export default function CompletionModal({
   onMainMenu,
   theme,
   language
-}: CompletionModalProps) {
+}) {
   const t = translations[language];
 
   // Format seconds to MM:SS
-  const formatTime = (seconds: number): string => {
+  const formatTime = (seconds) => {
     const m = Math.floor(seconds / 60).toString().padStart(2, '0');
     const s = (seconds % 60).toString().padStart(2, '0');
     return `${m}:${s}`;
   };
 
-  const getDifficultyLabel = (diff: Difficulty) => {
+  const getDifficultyLabel = (diff) => {
     if (diff === 'easy') return t.easy;
     if (diff === 'medium') return t.medium;
     return t.hard;
@@ -58,8 +46,8 @@ export default function CompletionModal({
         <div className="relative inline-flex items-center justify-center p-5 bg-amber-500/10 rounded-full text-amber-500 mb-4">
           <motion.div
             animate={{ 
-              rotate: [0, -10, 10, -10, 10, 0],
-              scale: [1, 1.1, 1, 1.1, 1] 
+               rotate: [0, -10, 10, -10, 10, 0],
+               scale: [1, 1.1, 1, 1.1, 1] 
             }}
             transition={{ repeat: Infinity, duration: 3, repeatDelay: 1 }}
           >

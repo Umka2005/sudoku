@@ -1,23 +1,13 @@
-import { SudokuGrid, Theme } from '../types';
-
-interface SudokuBoardProps {
-  grid: SudokuGrid;
-  selectedCell: { row: number; col: number } | null;
-  setSelectedCell: (cell: { row: number; col: number } | null) => void;
-  theme: Theme;
-  conflicts: boolean[][];
-}
-
 export default function SudokuBoard({
   grid,
   selectedCell,
   setSelectedCell,
   theme,
   conflicts
-}: SudokuBoardProps) {
+}) {
   
   // Helper to check if a cell is related (same row, col, or box) to the selected cell
-  const isRelatedCell = (r: number, c: number) => {
+  const isRelatedCell = (r, c) => {
     if (!selectedCell) return false;
     const { row: selRow, col: selCol } = selectedCell;
     if (r === selRow || c === selCol) return true;
@@ -31,7 +21,7 @@ export default function SudokuBoard({
   };
 
   // Helper to check if cell shares the same value as the selected cell (for matching highlight)
-  const isSameValueSelected = (cellVal: number) => {
+  const isSameValueSelected = (cellVal) => {
     if (!selectedCell || cellVal === 0) return false;
     const { row: selRow, col: selCol } = selectedCell;
     return grid[selRow][selCol].value === cellVal;

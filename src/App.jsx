@@ -5,35 +5,34 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Settings, RefreshCw, Undo2, ArrowLeft, Trophy, Clock, AlertTriangle } from 'lucide-react';
+import { Settings, RefreshCw, ArrowLeft, Trophy, Clock, AlertTriangle } from 'lucide-react';
 
-import { Difficulty, Language, Theme, SudokuGrid, SudokuCell } from './types';
-import { translations } from './translations';
-import { generatePuzzle, getDuplicateConflicts, checkGridCompleted } from './utils/sudoku';
+import { translations } from './translations.js';
+import { generatePuzzle, getDuplicateConflicts, checkGridCompleted } from './utils/sudoku.js';
 
-import SettingsScreen from './components/SettingsScreen';
-import SudokuBoard from './components/SudokuBoard';
-import Numpad from './components/Numpad';
-import CompletionModal from './components/CompletionModal';
+import SettingsScreen from './components/SettingsScreen.jsx';
+import SudokuBoard from './components/SudokuBoard.jsx';
+import Numpad from './components/Numpad.jsx';
+import CompletionModal from './components/CompletionModal.jsx';
 
 export default function App() {
   // Locale / UX states
-  const [language, setLanguage] = useState<Language>(() => {
-    return (localStorage.getItem('sudoku_lang') as Language) || 'en';
+  const [language, setLanguage] = useState(() => {
+    return localStorage.getItem('sudoku_lang') || 'en';
   });
   
-  const [theme, setTheme] = useState<Theme>(() => {
-    return (localStorage.getItem('sudoku_theme') as Theme) || 'dark';
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('sudoku_theme') || 'dark';
   });
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   // Gamestate states
-  const [screen, setScreen] = useState<'home' | 'game'>('home');
-  const [difficulty, setDifficulty] = useState<Difficulty>('easy');
-  const [grid, setGrid] = useState<SudokuGrid>([]);
-  const [initialGridCopy, setInitialGridCopy] = useState<SudokuGrid>([]); // To support quick restart
-  const [selectedCell, setSelectedCell] = useState<{ row: number; col: number } | null>(null);
+  const [screen, setScreen] = useState('home');
+  const [difficulty, setDifficulty] = useState('easy');
+  const [grid, setGrid] = useState([]);
+  const [initialGridCopy, setInitialGridCopy] = useState([]); // To support quick restart
+  const [selectedCell, setSelectedCell] = useState(null);
   
   const [timeSpent, setTimeSpent] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -41,20 +40,21 @@ export default function App() {
   const [mistakes, setMistakes] = useState(0);
 
   // Record stats
-  const [bestTimes, setBestTimes] = useState<Record<Difficulty, number | null>>({
+  const [bestTimes, setBestTimes] = useState({
     easy: null,
     medium: null,
     hard: null
   });
   const [isNewRecord, setIsNewRecord] = useState(false);
 
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef(null);
 
   // Sync state settings to localStorage
   useEffect(() => {
     localStorage.setItem('sudoku_lang', language);
   }, [language]);
 
+  // Sync theme to localStorage
   useEffect(() => {
     localStorage.setItem('sudoku_theme', theme);
   }, [theme]);
@@ -84,7 +84,7 @@ export default function App() {
   }, [isPlaying, isCompleted]);
 
   // Start a new game of the specified difficulty
-  const handleStartGame = (diff: Difficulty) => {
+  const handleStartGame = (diff) => {
     setDifficulty(diff);
     const { grid: generatedGrid } = generatePuzzle(diff);
     
@@ -117,7 +117,7 @@ export default function App() {
   };
 
   // Handles inputting a digit to the currently selected cell
-  const handleInputDigit = (digit: number) => {
+  const handleInputDigit = (digit) => {
     if (!selectedCell || isCompleted) return;
     const { row, col } = selectedCell;
     const cell = grid[row][col];
@@ -164,7 +164,7 @@ export default function App() {
 
   // Key Event Listener for physical computers & desktop viewports
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (e) => {
       if (screen !== 'game' || isSettingsOpen || isCompleted) return;
       
       // Numbers 1-9
@@ -233,11 +233,13 @@ export default function App() {
   };
 
   // Format seconds to mm:ss helper
-  const formatTime = (seconds: number): string => {
+  const formatTime = (seconds) => {
     const min = Math.floor(seconds / 60).toString().padStart(2, '0');
     const sec = (seconds % 60).toString().padStart(2, '0');
     return `${min}:${sec}`;
   };
+
+  const difficulties = ['easy', 'medium', 'hard'];
 
   return (
     <div 
@@ -332,7 +334,7 @@ export default function App() {
 
                 {/* Difficulty options */}
                 <div className="w-full space-y-3 max-w-[320px]">
-                  {(['easy', 'medium', 'hard'] as Difficulty[]).map((level) => {
+                  {difficulties.map((level) => {
                     const best = bestTimes[level];
                     let label = t.easy;
                     let glassClasses = '';
@@ -442,7 +444,7 @@ export default function App() {
                     className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold border transition-all ${
                       isDark 
                         ? 'bg-white/5 border-white/10 text-slate-300 hover:bg-white/10' 
-                        : 'bg-white/60 border-slate-200/50 text-slate-600 hover:bg-slate-100/50'
+                        : 'bg-white/60 border-slate-200/50 text-slate-650 hover:bg-slate-100/50'
                     }`}
                   >
                     <RefreshCw size={13} />
@@ -463,8 +465,6 @@ export default function App() {
           </AnimatePresence>
         </main>
       </div>
-
-      {/* --- SIDE CAR overlays / configuration overlays --- */}
 
       {/* Settings Panel Overlay */}
       <AnimatePresence>

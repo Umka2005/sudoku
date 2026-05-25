@@ -1,6 +1,4 @@
-import { Translations } from './types';
-
-export const translations: Translations = {
+export const translations = {
   en: {
     title: "Sudoku",
     selectDifficulty: "Choose Difficulty",

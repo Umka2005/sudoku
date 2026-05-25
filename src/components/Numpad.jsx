@@ -1,21 +1,13 @@
 import { motion } from 'motion/react';
 import { Delete } from 'lucide-react';
-import { Theme, Language } from '../types';
 import { translations } from '../translations';
-
-interface NumpadProps {
-  onNumberSelect: (num: number) => void;
-  onErase: () => void;
-  theme: Theme;
-  language: Language;
-}
 
 export default function Numpad({
   onNumberSelect,
   onErase,
   theme,
   language
-}: NumpadProps) {
+}) {
   const t = translations[language];
 
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
