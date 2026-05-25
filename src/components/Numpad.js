@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { Delete } from 'lucide-react';
-import { translations } from '../translations';
+import { translations } from '../translations.js';
 
 export default function Numpad({
   onNumberSelect,

@@ -10,10 +10,10 @@ import { Settings, RefreshCw, ArrowLeft, Trophy, Clock, AlertTriangle } from 'lu
 import { translations } from './translations.js';
 import { generatePuzzle, getDuplicateConflicts, checkGridCompleted } from './utils/sudoku.js';
 
-import SettingsScreen from './components/SettingsScreen.jsx';
-import SudokuBoard from './components/SudokuBoard.jsx';
-import Numpad from './components/Numpad.jsx';
-import CompletionModal from './components/CompletionModal.jsx';
+import SettingsScreen from './components/SettingsScreen.js';
+import SudokuBoard from './components/SudokuBoard.js';
+import Numpad from './components/Numpad.js';
+import CompletionModal from './components/CompletionModal.js';
 
 export default function App() {
   // Locale / UX states
