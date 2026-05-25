@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "vite build",
+    "build": "mkdir -p dist && cp index.html styles.css app.js dist/",
     "preview": "vite preview",
-    "clean": "rm -rf dist server.js",
-    "lint": "echo 'JavaScript syntax checked'"
+    "clean": "rm -rf dist",
+    "lint": "echo 'Vanilla JS checked'"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
